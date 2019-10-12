@@ -1,0 +1,74 @@
+(function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id))
+        return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+
+(function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id))
+        return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://apis.google.com/js/platform.js?onload=googleAsyncInit";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'google-jssdk'));
+
+$(document).on("click", ".btn-google-r, .btn-facebook-r", function (e) {
+    e.preventDefault();
+    $("#results-error-message").remove();
+    $("#results-modal .check-container").after("<p id='results-error-message'></p>");
+    var el = $(this);
+    if ($("[name='contact-politics']").is(":checked"))
+    {
+        if (el.hasClass("btn-google-r"))
+        {
+            auth2.signIn().then(function () {
+                var profile = auth2.currentUser.get().getBasicProfile();
+                registerUser(profile.getName(), profile.getEmail());
+            });
+
+        } else {
+            FB.login(function (response) {
+                if (response.status === 'connected') {
+                    FB.api('/me?fields=name,email', function (response) {
+                        registerUser(response.name, response.email);
+                    });
+                } else {
+                    $("#results-error-message").text(JSON.stringify(response));
+                }
+            }, {scope: 'email'});
+        }
+    } else {
+        $("#results-error-message").text("Es necesario aceptar las políticas de privacidad.").show();
+    }
+
+    return false;
+});
+
+
+
+function registerUser(name, email)
+{
+    $("#contact-name").val(name);
+    $("#contact-email").val(email);
+
+    $.ajax({
+        type: "POST",
+        url: "/results/user",
+        data: $("#contact-results-form").serialize(),
+        success: function (data) {
+            if (data.result == "OK") {
+                window.location = data.url;
+            } else {
+                $("#results-error-message").text(data.result);
+                $("#results-error-message").show();
+            }
+        }
+    });
+}

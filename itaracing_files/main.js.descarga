@@ -1,0 +1,784 @@
+jQuery(function () {
+
+    if ($(".mixed").length)
+    {
+        $('.mixed').flashy({
+            showClass: 'fx-fadeIn',
+            hideClass: 'fx-fadeOut'
+        });
+    }
+
+    if ($(".youtube").length)
+    {
+        var youtube = $(".youtube");
+
+        for (var i = 0; i < youtube.length; i++) {
+
+            var source = "https://img.youtube.com/vi/" + youtube[i].dataset.embed + "/sddefault.jpg";
+
+
+            var image = new Image();
+            image.src = source;
+            image.addEventListener("load", function () {
+                youtube[ i ].appendChild(image);
+                var parent = $(youtube[i]).parents(".mixed");
+                if (parent.length)
+                {
+                    $(youtube[ i ]).addClass("en-modal");
+                }
+            }(i));
+
+            youtube[i].addEventListener("click", function () {
+                if (!$(this).hasClass("en-modal"))
+                {
+                    var iframe = document.createElement("iframe");
+
+                    iframe.setAttribute("frameborder", "0");
+                    iframe.setAttribute("allowfullscreen", "");
+                    iframe.setAttribute("src", "https://www.youtube.com/embed/" + this.dataset.embed + "?rel=0&showinfo=0&autoplay=1");
+
+                    this.innerHTML = "";
+                    this.appendChild(iframe);
+                }
+
+
+            });
+        }
+    }
+
+    if (Cookies.get('modal_dis') == null) {
+        $('#disclaimerBanner').show();
+        //$('#disclaimerModal').modal('show');
+    }
+
+
+    $(document).on('click', '.video-thumb', function () {
+        var id = $(this).attr('id');
+        var video = $("#" + id + "-frame").attr('src');
+        var title = $("#video-title-" + id + "").text();
+        var description = $("#video-description-" + id + "").text();
+        changeMainVideo(video, title, description, "#" + id + "-frame", "#video-title-" + id + "", "#video-description-" + id + "");
+    });
+
+
+
+    function changeMainVideo(video, title, description, frame, frame_title, frame_description) {
+        var mainVideo = $("#Main-frame").attr('src');
+        var mainTitle = $("#Main-title").text();
+        var mainDescription = $("#Main-description").text();
+
+        $("#Main-title").text(title);
+        $("#Main-description").text(description);
+        $("#Main-frame").attr('src', video + '?autoplay=1');
+        $('html,body').animate({
+            scrollTop: $("#Main-frame").offset().top},
+                'fast');
+    }
+
+    $('.videos-carousel').owlCarousel({
+        loop: true,
+        margin: 10,
+        nav: true,
+        navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 3
+            },
+            1000: {
+                items: 3
+            }
+        }
+    })
+
+
+    if ($('#search-tags').length) {
+
+        var search_data = {"tags": $("#search-tags").text().replace(/\s+/, "").split(","),
+            "posts_name": $("#search-posts").text().replace(/\s+/, "").split(",")};
+
+        console.log(search_data);
+        $.typeahead({
+            input: '.js-typeahead-country_v1',
+            minLength: 1,
+            order: "asc",
+            source: {
+                tags: {
+                    data: search_data.tags
+                },
+                titles: {
+                    data: search_data.posts_name
+                }
+            }
+        });
+    }
+
+    $("#coverflow").flipster({
+        style: 'flat',
+        spacing: -0.01,
+        nav: false,
+        buttons: true,
+        scrollwheel: false,
+        onItemSwitch: function (currentItem, previousItem) {
+            $(currentItem).resize();
+            HideCalendarSideItems();
+            $(currentItem).children().find('.calendar-item-body').removeClass('dont-show');
+            $(currentItem).children().children().prepend("<h1 class='calendar-title text-center'>CALENDARIO</h1>");
+            $(currentItem).children().children().removeClass("c-padding");
+        },
+    });
+
+
+    $('.campeonato-carousel').owlCarousel({
+        loop: true,
+        margin: 10,
+        nav: false,
+        autoplay: true,
+        autoplayTimeout: 1500,
+        autoplayHoverPause: false,
+        responsive: {
+            0: {
+                items: 2
+            },
+            600: {
+                items: 4
+            },
+            800: {
+                items: 5
+            },
+            1100: {
+                items: 8
+            }
+        }
+    });
+
+    $('.patrocinadores-carousel').owlCarousel({
+        loop: true,
+        margin: 30,
+        nav: false,
+        autoplay: true,
+        autoplayTimeout: 1500,
+        autoplayHoverPause: false,
+        responsive: {
+            0: {
+                items: 2
+            },
+            600: {
+                items: 4
+            },
+            1000: {
+                items: 5
+            }
+        }
+    });
+
+    $('.aliados-carousel').owlCarousel({
+        loop: true,
+        margin: 50,
+        nav: false,
+        autoplay: true,
+        autoplayTimeout: 1500,
+        autoplayHoverPause: false,
+        responsive: {
+            0: {
+                items: 2
+            },
+            600: {
+                items: 3
+            },
+            1000: {
+                items: 5
+            }
+        }
+    });
+
+
+    $('.pilot-carousel').owlCarousel({
+        loop: true,
+        margin: 10,
+        nav: true,
+        navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],
+        responsive: {
+            0: {
+                items: 2
+            },
+            600: {
+                items: 4
+            }
+        }
+    });
+
+
+
+
+    // if ($('#c-0').length) {
+    //     var cup_id = $("#c-0").prev().children().attr("class");
+    //     $("." + cup_id).each(function (index) {
+    //         $(this).removeClass("dont-show");
+    //     });
+    // }
+
+    $('.faq-question-top a').click(function () {
+        var collapseSimbol = $(this).children();
+        var collapseBody = $(this).parent().next();
+        if (collapseBody.hasClass("in")) {
+            $(this).parent().removeClass("faq-question-blue");
+            collapseSimbol.removeClass("fa-angle-down");
+            collapseSimbol.addClass("fa-angle-right");
+        } else {
+            $(this).parent().addClass("faq-question-blue");
+            collapseSimbol.removeClass("fa-angle-right");
+            collapseSimbol.addClass("fa-angle-down");
+        }
+    });
+
+    $('.cup-collapse-top a').click(function () {
+        var cup_id = $(this).data('cup');
+
+        $("." + cup_id).each(function (index) {
+            $(this).removeClass("dont-show");
+        });
+
+        $(".championship-table").each(function (index) {
+            if (!$(this).hasClass(cup_id)) {
+                $(this).addClass("dont-show");
+            }
+        });
+
+        var currentCollapse = $(this).attr("href");
+        $(".cup-collapse-body").each(function (index) {
+            if (!$(this).is(currentCollapse)) {
+                $(this).removeClass("in");
+                $(this).prev().removeClass("faq-question-blue");
+                $(this).prev().children().children().removeClass("fa-angle-down");
+                $(this).prev().children().children().addClass("fa-angle-right");
+            }
+        });
+        var collapseSimbol = $(this).children();
+        var collapseBody = $(this).parent().next();
+        if (collapseBody.hasClass("in")) {
+            $(this).parent().removeClass("faq-question-blue");
+            collapseSimbol.removeClass("fa-angle-down");
+            collapseSimbol.addClass("fa-angle-right");
+        } else {
+            $(this).parent().addClass("faq-question-blue");
+            collapseSimbol.removeClass("fa-angle-right");
+            collapseSimbol.addClass("fa-angle-down");
+        }
+    });
+
+
+    function $_GET(param) {
+        var vars = {};
+        window.location.href.replace(location.hash, '').replace(
+                /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+                function (m, key, value) { // callback
+                    vars[key] = value !== undefined ? value : '';
+                }
+        );
+
+        if (param) {
+            return vars[param] ? vars[param] : null;
+        }
+        return vars;
+    }
+
+    $("#suscribe-btn-camp").click(function () {
+        ValidateSubscriptionCamp();
+
+    });
+
+
+    function ValidateSubscriptionCamp() {
+        $(".input-error").removeClass("input-error");
+        $(".suscribe-error-camp").addClass("dont-show");
+        var name = $("#suscribe-name-camp").val();
+        var email = $("#suscribe-email-camp").val();
+        var errorMessage = "";
+        if (name.length < 3) {
+            errorMessage = "El nombre ingresado no es valido.";
+            $(".suscribe-error-camp").text(errorMessage);
+            $(".suscribe-error-camp").removeClass("dont-show");
+            $("#suscribe-name-camp").addClass("input-error");
+        } else if (!isEmail(email)) {
+            errorMessage = "El email ingresado no es valido";
+            $(".suscribe-error-camp").text(errorMessage);
+            $(".suscribe-error-camp").removeClass("dont-show");
+            $("#suscribe-email-camp").addClass("input-error");
+        }
+        if (errorMessage == "") {
+            var url = "/subscribe";
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $("#suscribe-form-camp").serialize(),
+                success: function (data) {
+                    if (data.result == "OK") {
+                        window.location = "/gracias-por-participar";
+                    } else {
+                        $(".suscribe-error-camp").html(data.result);
+                        $(".suscribe-error-camp").removeClass("dont-show");
+                    }
+                }
+            });
+        }
+    }
+
+
+    $("#suscribe-btn").click(function () {
+        ValidateSubscription();
+    });
+
+
+    function ValidateSubscription() {
+        $(".input-error").removeClass("input-error");
+        $(".suscribe-error").addClass("dont-show");
+        var name = $("#suscribe-name").val();
+        var email = $("#suscribe-email").val();
+        var errorMessage = "";
+        if (name.length < 3) {
+            errorMessage = "El nombre ingresado no es valido.";
+            $(".suscribe-error").text(errorMessage);
+            $(".suscribe-error").removeClass("dont-show");
+            $("#suscribe-name").addClass("input-error");
+        } else if (!isEmail(email)) {
+            errorMessage = "El email ingresado no es valido";
+            $(".suscribe-error").text(errorMessage);
+            $(".suscribe-error").removeClass("dont-show");
+            $("#suscribe-email").addClass("input-error");
+        }
+        if (errorMessage == "") {
+            var url = "/subscribe";
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $("#suscribe-form").serialize(),
+                success: function (data) {
+                    if (data.result == "OK") {
+                        window.location = "/gracias-por-suscribirte";
+                    } else {
+                        $(".suscribe-error").html(data.result);
+                        $(".suscribe-error").removeClass("dont-show");
+                    }
+                }
+            });
+        }
+    }
+
+
+
+    $("#footer-suscribe-btn").click(function () {
+        ValidateSubscriptionFooter();
+    });
+
+
+    function ValidateSubscriptionFooter() {
+        $(".input-error").removeClass("input-error");
+        $(".validation-error").addClass("dont-show");
+        var name = $("#footer-suscribe-name").val();
+        var email = $("#footer-suscribe-email").val();
+        var errorMessage = "";
+        if (name.length < 3) {
+            errorMessage = "El nombre ingresado no es valido.";
+            $(".validation-error").text(errorMessage);
+            $(".validation-error").removeClass("dont-show");
+            $("#footer-suscribe-name").addClass("input-error");
+        } else if (!isEmail(email)) {
+            errorMessage = "El email ingresado no es valido";
+            $(".validation-error").text(errorMessage);
+            $(".validation-error").removeClass("dont-show");
+            $("#footer-suscribe-email").addClass("input-error");
+        }
+        if (errorMessage == "") {
+            var url = "/subscribe";
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $("#footer-suscribe-form").serialize(),
+                success: function (data) {
+                    if (data.result == "OK") {
+                        window.location = "/gracias-por-suscribirte";
+                    } else {
+                        $(".validation-error").html(data.result);
+                        $(".validation-error").removeClass("dont-show");
+                    }
+                }
+            });
+        }
+    }
+
+
+
+    $("#results-open-modal-btn").click(function () {
+        $("#modal-season").val($("#season-results").val());
+        $("#modal-championship").val($("#championship-results").val());
+        $("#modal-cup").val($("#cup-results").val());
+    });
+
+    $(document).on("click", "#results-suscribe-btn", function (e) {
+        e.preventDefault();
+        ValidateResultForm();
+        return false;
+    });
+
+    $('#results-suscribe-btn').click(function () {
+        $(".results-table-container").removeClass("dont-show");
+    });
+
+    function ValidateResultForm() {
+        var errorMessage = "";
+        $("#results-error-message").hide();
+        $(".input-error").removeClass("input-error");
+
+        if (!$("#contact-name").val()) {
+            errorMessage = "El nombre ingresado no es valido.";
+            $("#results-error-message").text(errorMessage);
+            $("#results-error-message").show();
+            $("#contact-name").addClass("input-error");
+        } else if (!$("#contact-email").val() || !isEmail($("#contact-email").val())) {
+            errorMessage = "El email ingresado no es valido.";
+            $("#results-error-message").text(errorMessage);
+            $("#results-error-message").show();
+            $("#contact-email").addClass("input-error");
+        } else if (!$("input[name='contact-politics']").is(":checked")) {
+            errorMessage = "Es necesario aceptar las políticas de privacidad.";
+            $("#results-error-message").text(errorMessage);
+            $("#results-error-message").show();
+        }
+
+        if (errorMessage == "") {
+            var url = "/results/user";
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $("#contact-results-form").serialize(),
+                success: function (data) {
+                    if (data.result == "OK") {
+                        window.location = data.url;
+                    } else {
+                        $("#results-error-message").text(data.result);
+                        $("#results-error-message").show();
+                    }
+                }
+            });
+        }
+        return 0;
+    }
+
+
+    $("#contact-form-btn").click(function () {
+        ValidateContact();
+    });
+
+
+    function ValidateContact() {
+        var errorMessage = "";
+        $("#contact-error-message").hide();
+        $(".input-error").removeClass("input-error");
+
+        if (!$("#contact-name").val()) {
+            errorMessage = "El nombre ingresado no es valido.";
+            $("#contact-error-message").text(errorMessage);
+            $("#contact-error-message").show();
+            $("#contact-name").addClass("input-error");
+        } else if (!$("#contact-last-name").val()) {
+            errorMessage = "El apellido ingresado no es valido.";
+            $("#contact-error-message").text(errorMessage);
+            $("#contact-error-message").show();
+            $("#contact-last-name").addClass("input-error");
+        } else if (!$("#contact-email").val() || !isEmail($("#contact-email").val())) {
+            errorMessage = "El email ingresado no es valido.";
+            $("#contact-error-message").text(errorMessage);
+            $("#contact-error-message").show();
+            $("#contact-email").addClass("input-error");
+        } else if (!$("#contact-phone").val()) {
+            errorMessage = "El teléfono ingresado no es valido.";
+            $("#contact-error-message").text(errorMessage);
+            $("#contact-error-message").show();
+            $("#contact-phone").addClass("input-error");
+        } else if (!$("#contact-message").val()) {
+            errorMessage = "Indique un mensaje.";
+            $("#contact-error-message").text(errorMessage);
+            $("#contact-error-message").show();
+        } else if (!$("input[name='contact-politics']").is(":checked")) {
+            errorMessage = "Es necesario aceptar las políticas de privacidad";
+            $("#contact-error-message").text(errorMessage);
+            $("#contact-error-message").show();
+        }
+
+        if (errorMessage == "") {
+            var url = "/contact";
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $("#contact-form").serialize(),
+                success: function (data) {
+                    if (data.result == "OK") {
+                        window.location = "/gracias-por-contactarnos";
+                    } else {
+                        $("#contact-error-message").html(data.result);
+                        $("#contact-error-message").show();
+                    }
+                }
+            });
+        }
+        return 0;
+    }
+
+    function isEmail(email) {
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email);
+    }
+
+
+    $("#navbar-camp-btn").click(function () {
+        if ($(window).width() < 765 && !$("#navbar-camp-btn").hasClass("open")) {
+            $('html, body').animate({
+                scrollTop: $(".btm-scroller").offset().top
+            }, 300);
+        }
+    });
+
+    $(".only-letters").keypress(function (event) {
+        var inputValue = event.which;
+        if (!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) {
+            event.preventDefault();
+        }
+    });
+
+
+
+
+    $('.c-pointer').click(function () {
+        window.location = $(this).attr('page-url');
+    });
+
+
+    SetAboutUsImg();
+
+    function SetAboutUsImg() {
+        if ($(window).width() > 991) {
+            $(".about-us-img-box").css({'height': ($(".about-us-body").height() + 'px')});
+        } else {
+            $(".about-us-img-box").css('height', 'auto');
+        }
+    }
+
+    $(window).resize(function () {
+        SetAboutUsImg();
+    });
+
+
+    function HideCalendarSideItems() {
+        $(".flipster__item").each(function (index) {
+            $(this).children().find('.calendar-item-body').addClass('dont-show');
+            $(this).children().find('.calendar-title').remove();
+            $(this).children().children().addClass('c-padding');
+        });
+    }
+
+    $(".flipster__item--current").children().children().find('.calendar-item-body').removeClass('dont-show');
+    $(".flipster__item--current").children().children().prepend("<h1 class='calendar-title text-center'>CALENDARIO</h1>");
+    $(".flipster__item--current").children().children().removeClass("c-padding");
+
+
+    $(document).on("change", ".campeonato", function (e) {
+        var campeonato = parseInt($(this).val());
+        if (campeonato !== 0)
+        {
+            $.ajax({
+                type: "POST",
+                url: "/copas_ajax",
+                data: {
+                    id_championship: campeonato
+                },
+                dataType: "html",
+                success: function (data) {
+                    if (data.length)
+                    {
+                        $(".copa").show();
+                        $(".copa").html(data);
+                    } else {
+                        $(".copa").hide();
+                    }
+                }
+            });
+        }
+    });
+
+    $(document).ready(function () {
+        if ($(".results-table").length)
+        {
+//            jQuery(".results-table").DataTable({
+//                language: {
+//                    "sProcessing": "Procesando...",
+//                    "sLengthMenu": "Mostrar _MENU_ registros",
+//                    "sZeroRecords": "No se encontraron resultados",
+//                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+//                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+//                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+//                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+//                    "sInfoPostFix": "",
+//                    "sSearch": "Filtrar:",
+//                    "sUrl": "",
+//                    "sInfoThousands": ",",
+//                    "sLoadingRecords": "Cargando...",
+//                    "oPaginate": {
+//                        "sFirst": "Primero",
+//                        "sLast": "Último",
+//                        "sNext": "Siguiente",
+//                        "sPrevious": "Anterior"
+//                    },
+//                    "oAria": {
+//                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+//                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+//                    }
+//                },
+//                initComplete: function (settings, json) {
+//
+//                },
+//                responsive: true,
+//                "dom": '<"top"<"row"<"col-md-4"f>>>t<"bottom"ip><"clear">',
+//                buttons: []
+//            });
+        }
+    });
+
+    $(document).on("click", ".btn-modal-disclaimer", function (e) {
+        e.preventDefault();
+        Cookies.set('modal_dis', 'true', {expires: 7});
+        $("#disclaimerBanner").hide();
+        return false;
+    });
+
+    $(document).on("click", ".ciar-box", function (e) {
+        e.preventDefault();
+        var ciar = parseInt($(this).attr("data-open"));
+        window.map.setZoom(5);
+        window.map.setCenter(new google.maps.LatLng(19.3911668, -99.4238159));
+        window.infoCANCUN.close();
+        window.infoGDL.close();
+        window.infoSE.close();
+        switch (ciar)
+        {
+            case 1:
+                window.map.panTo(window.markerSE.getPosition());
+                new google.maps.event.trigger(window.markerSE, 'click');
+                break;
+            case 2:
+                window.map.panTo(window.markerCANCUN.getPosition());
+                new google.maps.event.trigger(window.markerCANCUN, 'click');
+                break;
+            case 3:
+                window.map.panTo(window.markerGDL.getPosition());
+                new google.maps.event.trigger(window.markerGDL, 'click');
+                break;
+        }
+
+        window.map.setZoom(11);
+
+        return false;
+    });
+});
+
+
+initMap = function ()
+{
+    if ($("#mapa").length)
+    {
+
+
+        var minZoomLevel = 5;
+        var bounds = new google.maps.LatLngBounds();
+
+        bounds.extend(new google.maps.LatLng(20.7360597, -103.3799637));
+        bounds.extend(new google.maps.LatLng(21.1048568, -86.8375073));
+
+        window.map = new google.maps.Map(document.getElementById('mapa'), {
+            zoom: minZoomLevel,
+            center: new google.maps.LatLng(19.3911668, -99.4238159),
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            disableDefaultUI: true,
+            zoomControl: true,
+            backgroundColor: '#FFF',
+            draggable: false,
+            scaleControl: false,
+            scrollwheel: false,
+        });
+
+        var image = {
+            url: "https://mt.googleapis.com/vt/icon/name=icons/onion/SHARED-mymaps-container-bg_4x.png,icons/onion/SHARED-mymaps-container_4x.png,icons/onion/1633-motorcycle_4x.png&highlight=ff000000,01579B&scale=2.0",
+            size: new google.maps.Size(56, 56),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(28, 28),
+            scaledSize: new google.maps.Size(28, 28)
+        };
+
+        window.infoSE = new google.maps.InfoWindow({
+            content: $("<div class='info-ciar-box'></div>").html($(".ciar-box:first").html()).get(0).outerHTML,
+            maxWidth: 320
+        });
+
+        window.infoCANCUN = new google.maps.InfoWindow({
+            content: $("<div class='info-ciar-box'></div>").html($(".ciar-box:eq(1)").html()).get(0).outerHTML,
+            maxWidth: 320
+        });
+
+        window.infoGDL = new google.maps.InfoWindow({
+            content: $("<div class='info-ciar-box'></div>").html($(".ciar-box:last").html()).get(0).outerHTML,
+            maxWidth: 320
+        });
+
+        window.markerSE = new google.maps.Marker({
+            position: {lat: 19.527103, lng: -99.3609327},
+            map: window.map,
+            icon: image,
+            title: "CIAR SIERRA ESMERALDA",
+            id: 1
+        });
+        window.markerSE.addListener('click', function () {
+            window.infoCANCUN.close();
+            window.infoGDL.close();
+            window.infoSE.close();
+            window.infoSE.open(window.map, window.markerSE);
+        });
+
+        window.markerCANCUN = new google.maps.Marker({
+            position: {lat: 21.1048568, lng: -86.8375073},
+            map: window.map,
+            icon: image,
+            title: "CIAR CANCÚN",
+            id: 2
+        });
+        window.markerCANCUN.addListener('click', function () {
+            window.infoCANCUN.close();
+            window.infoGDL.close();
+            window.infoSE.close();
+            window.infoCANCUN.open(window.map, window.markerCANCUN);
+        });
+
+        window.markerGDL = new google.maps.Marker({
+            position: {lat: 20.7360597, lng: -103.3799637},
+            map: window.map,
+            icon: image,
+            title: "CIAR GUADALAJARA",
+            id: 3
+        });
+
+        window.markerGDL.addListener('click', function () {
+            window.infoCANCUN.close();
+            window.infoGDL.close();
+            window.infoSE.close();
+            window.infoGDL.open(window.map, window.markerGDL);
+        });
+
+        google.maps.event.addListener(map, 'zoom_changed', function () {
+            if (map.getZoom() < minZoomLevel)
+                map.setZoom(minZoomLevel);
+        });
+
+        map.fitBounds(bounds);
+    }
+};
