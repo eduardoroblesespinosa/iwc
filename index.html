@@ -216,7 +216,24 @@ th, td {
   </div>
 	     <div class="top-spacing">&nbsp;</div>
         </section>
-	                        <option>video</option>
+	  <div style="float: right;">
+                <input type="checkbox" id="fakeDataChannels" style="background-color:black;">
+                <label for="fakeDataChannels" title="You can chat and share files using your preferred signaling gateway instead of using WebRTC data channels!">Setup Fake Data Connection?</label>
+			</div>
+            <section>
+                <select style="color:black" id="session" title="Session">
+                    <option>audio+video+data+screen</option>
+                    <option>audio+video+data</option>
+                    <option>audio+data+screen</option>
+                    <option>audio+video+screen</option>
+                    <option selected>audio+video</option>
+                    <option>audio+screen</option>
+                    <option>video+screen</option>
+                    <option>data+screen</option>
+                    <option>audio+data</option>
+                    <option>video+data</option>
+                    <option>audio</option>
+                    <option>video</option>
                     <option>data</option>
                     <option>screen</option>
                 </select>
@@ -268,7 +285,8 @@ th, td {
                     </td>
 		    </tr>
             </table>
-        </section>
+        </section>                     
+	
 	  <script>
       var connection = new RTCMultiConnection();
 
