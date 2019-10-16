@@ -331,7 +331,7 @@ th, td {
 
           var tr = document.createElement('tr');
           tr.innerHTML = '<td><strong>' + session.extra['session-name'] + '</strong> is an active session.</td>' +
-              '<td><button class="join" style="background-color:black;">Unirse</button></td>';
+              '<td><button class="join">Unirse</button></td>';
           roomsList.insertBefore(tr, roomsList.firstChild);
 
           tr.querySelector('.join').setAttribute('data-sessionid', session.sessionid);
