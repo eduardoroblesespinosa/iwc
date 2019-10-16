@@ -355,7 +355,7 @@ th, td {
 
           var mediaElement = getMediaElement(e.mediaElement, {
               width: (videosContainer.clientWidth / 2) - 50,
-              title: e.sessionid,
+              title: e.userid,
               buttons: buttons,
               onMuted: function (type) {
                   connection.streams[e.streamid].mute({
@@ -448,7 +448,7 @@ th, td {
       };
 
       connection.onclose = function (e) {
-          appendDIV('Data connection is closed between you and ' + e.userid);
+          appendDIV('Data connection is closed between you and ' + e.sessionName);
       };
 
       connection.onleave = function (e) {
