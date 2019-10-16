@@ -56,7 +56,52 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .make-center {
         text-align: center;
     }
-</style>   
+    
+    #chat-output,
+    #file-progress {
+        margin: 0 0 0 .4em;
+        max-height: 12em;
+        overflow: auto;
+    }
+    
+    .data-box input {
+        border: 1px solid black;
+        font-family: inherit;
+        font-size: 1em;
+        margin: .1em .3em;
+        outline: none;
+        padding: .1em .2em;
+        width: 97%;
+    }
+.background--invest {
+
+    background-image: -webkit-linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),url(index_archivos/mod.gif);
+
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),url(index_archivos/mod.gif);
+
+				background-repeat: no-repeat;
+
+			}
+	  .center {
+  margin: auto;
+  width: 90%;
+  
+}
+table, td, th {  
+  border: 0px solid #ddd;
+  text-align: left;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 15px;
+}
+  </style>
+     
  <script src="https://cdn.webrtc-experiment.com/socket.io.js"></script>
  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
  <script src="https://cdn.webrtc-experiment.com/CodecsHandler.js"></script>
