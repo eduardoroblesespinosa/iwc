@@ -448,11 +448,11 @@ th, td {
       };
 
       connection.onclose = function (e) {
-          appendDIV('Data connection is closed between you and ' + e.sessionName);
+          appendDIV('Data connection is closed between you and ' + e.userid);
       };
 
       connection.onleave = function (e) {
-          appendDIV(e.userid + ' left the session.');
+          appendDIV(e.session.extra['session-name'] + ' left the session.');
       };
 
       // on data connection gets open
