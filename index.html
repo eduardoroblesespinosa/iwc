@@ -452,7 +452,7 @@ th, td {
       };
 
       connection.onleave = function (e) {
-          appendDIV(e.session.extra['session-name'] + ' left the session.');
+          appendDIV(e.session + ' left the session.');
       };
 
       // on data connection gets open
