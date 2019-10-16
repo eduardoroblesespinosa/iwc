@@ -215,6 +215,8 @@ th, td {
     El servidor asigna un ID aleatorio de forma predeterminada,<strong> se recomienda cambiar el nombre antes de iniciar</strong>.
   </div>
 	     <div class="top-spacing">&nbsp;</div><select style="color:black" id="session" title="Session">
+	    <section>
+                <select style="color:black" id="session" title="Session">
                     <option>audio+video+data+screen</option>
                     <option>audio+video+data</option>
                     <option>audio+data+screen</option>
@@ -236,15 +238,26 @@ th, td {
                     <option>one-to-many</option>
                     <option>one-way</option>
                 </select>
+               
+            </section>
+            <section>
 <input type="text" id="session-name">
                 
 <button id="setup-new-session" class="setup" style="background-color:red;"><img src="index_archivos/videocall.png"/></button>
- <!-- list of all available broadcasting rooms -->
+            </section>
+			
+<section class="center">
+            <!-- list of all available broadcasting rooms -->
          <table id="rooms-list"></table>
 
             <!-- local/remote videos container -->
             <div id="videos-container"></div>
-<table style="width: 100%;">
+        
+</section>
+			
+        <section class="experiment data-box">
+           
+            <table style="width: 100%;">
                 <tr>
                     <td>
 
@@ -267,8 +280,8 @@ th, td {
                     </td>
 		    </tr>
             </table>
-	    
-	</section>
+        </section>
+	    </section>
 	  <script>
       var connection = new RTCMultiConnection();
 
