@@ -355,7 +355,7 @@ th, td {
 
           var mediaElement = getMediaElement(e.mediaElement, {
               width: (videosContainer.clientWidth / 2) - 50,
-              title: e.userid,
+              title: e.sessionid,
               buttons: buttons,
               onMuted: function (type) {
                   connection.streams[e.streamid].mute({
