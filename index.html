@@ -216,11 +216,11 @@ th, td {
   </div>
 	     <div class="top-spacing">&nbsp;</div>
         </section>
-	  <div style="float: right;">
-                <input type="checkbox" id="fakeDataChannels" style="background-color:black;">
-                <label for="fakeDataChannels" title="You can chat and share files using your preferred signaling gateway instead of using WebRTC data channels!">Setup Fake Data Connection?</label>
-			</div>
+	  
             <section class="make-center">
+		    <input type="checkbox" id="fakeDataChannels" style="background-color:black;">
+                <label for="fakeDataChannels" title="You can chat and share files using your preferred signaling gateway instead of using WebRTC data channels!">Setup Fake Data Connection?</label>
+		
                 <select style="color:black" id="session" title="Session">
                     <option>audio+video+data+screen</option>
                     <option>audio+video+data</option>
@@ -245,7 +245,7 @@ th, td {
                 </select>
                
             </section>
-            <section>
+            <section class="make-center">
 <input type="text" id="session-name">
                 
 <button id="setup-new-session" class="setup" style="background-color:red;"><img src="index_archivos/videocall.png"/></button>
